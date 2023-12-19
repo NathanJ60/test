@@ -9,7 +9,7 @@ load_in_4bit: true
 strict: false
 
 datasets:
-  - path: mlabonne/Evol-Instruct-Python-1k
+  - path: PoloGGG/docker
     type: alpaca
 dataset_prepared_path: last_run_prepared
 val_set_size: 0.05
