@@ -2,13 +2,13 @@ base_model: mistralai/Mistral-7B-v0.1
 model_type: MistralForCausalLM
 tokenizer_type: LlamaTokenizer
 is_mistral_derived_model: true
-hub_model_id: PoloGGG/EvolMistral-7B-v0.1
+hub_model_id: DevSelego/Mistral7b_summarizer
 
 load_in_8bit: false
 load_in_4bit: true
 strict: false
 datasets:
-  - path: PoloGGG/docker
+  - path: DevSelego/jobmaker_summarize
     type: alpaca
 dataset_prepared_path: last_run_prepared
 val_set_size: 0.05
