@@ -6,7 +6,7 @@ from vllm import LLM, SamplingParams
 
 # Initialiser le modèle LLM
 llm = LLM(model="DevSelego/Mistral7b_summarizer_v2")
-sampling_params = SamplingParams(temperature=0.8, top_p=0.95)
+sampling_params = SamplingParams(temperature=0.8, top_p=0.95, max_tokens=1000)
 
 app = FastAPI()
 
