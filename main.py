@@ -1,5 +1,5 @@
 from fastapi import FastAPI, HTTPException, Depends
-from transformers import PhiForCausalLM, AutoTokenizer
+from transformers import AutoModelForCausalL, AutoTokenizer
 from datetime import datetime, timedelta
 from pydantic import BaseModel
 import secrets
