@@ -5,8 +5,8 @@ from pydantic import BaseModel
 import secrets
 
 # Modèle et Tokenizer
-model = PhiForCausalLM.from_pretrained("susnato/phi-1_5_dev")
-tokenizer = AutoTokenizer.from_pretrained("susnato/phi-1_5_dev")
+model = PhiForCausalLM.from_pretrained("DevSelego/Mistral7b_summarizer_v2")
+tokenizer = AutoTokenizer.from_pretrained("DevSelego/Mistral7b_summarizer_v2")
 
 app = FastAPI()
 
