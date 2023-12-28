@@ -1,4 +1,4 @@
-from fastapi import FastAPI, HTTPException, Depends, Request
+from fastapi import FastAPI, HTTPException, Request
 from datetime import datetime, timedelta
 from pydantic import BaseModel
 import secrets
@@ -15,7 +15,7 @@ temp_keys = {}
 
 # Classe pour les requêtes de génération
 class PromptRequest(BaseModel):
-    prompt: str  # Modifier ici pour accepter un seul prompt
+    prompt: str
 
 # Classe pour les requêtes de token
 class TokenRequest(BaseModel):
@@ -26,7 +26,7 @@ def verify_key(request: Request):
     token = request.headers.get('x-access-token')
     if token in temp_keys and temp_keys[token] > datetime.utcnow():
         return True
-    raise HTTPException(status_code=403, detail="Clé invalide ou expirée")
+    return False
 
 # Route pour obtenir une clé temporaire
 @app.post("/get_key")
@@ -39,7 +39,11 @@ def get_key(token_request: TokenRequest):
 
 # Route pour générer une réponse
 @app.post("/generate")
-def generate(prompt_request: PromptRequest, request: Request = Depends(verify_key)):
+async def generate(prompt_request: PromptRequest, request: Request):
+    # Vérifier la clé à partir de l'en-tête
+    if not verify_key(request):
+        raise HTTPException(status_code=403, detail="Clé invalide ou expirée")
+
     modified_prompt = f"### OBJECTIF\nSynthétiser un texte en moins de 400 caractères.\n### INSTRUCTUTION\n- Résumer le texte en moins de 400 caractères.\n- Garde les éléments essentiels à la compréhension et au contexte.\n- Rédige le résumé à la première personne en te plaçant du point de vu de la personne ayant porté le projet.\n- Si le Texte est en anglais, le Résumé doit être écrit en anglais.\n- Si le Texte est en français, le Résumé doit être écrit en français.\n###Texte\n{prompt_request.prompt}\n###Résumé\n"
     output = llm.generate([modified_prompt], sampling_params)
     return {"response": {"prompt": prompt_request.prompt, "response": output[0].outputs[0].text}}
